@@ -80,8 +80,9 @@ $(function() {
       $(this.el).removeClass("edit");
     },
     catchKeys: function(e) {
-      if ($(this.el).hasClass('edit'))
+      if ($(this.el).hasClass('edit')){
         e.stopPropagation();
+      }
     }
   });
 
@@ -197,6 +198,6 @@ $(function() {
   // Fire up the app.
   window.App = new AppView({
     model: new GraphList()
-  })
+  });
 
 });
