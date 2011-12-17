@@ -15,8 +15,9 @@ $(function() {
         this.set({title: this.get('target')[0]});
       }
     },
-    toUrl: function() {
-      return $.param(this.attributes, true);
+    toUrl: function(defaults) {
+      var args = _.extend({}, defaults || {}, this.attributes);
+      return $.param(args, true);
     }
   });
 
@@ -56,9 +57,8 @@ $(function() {
         height: ~~($('body').height() / 2 - 20),
         t: Math.random()
       };
-      var computedSrc = cfg.srcBase + this.model.toUrl() +
-                        '&' + $.param(dimensions, true) +
-                        '&' + $.param(cfg.globalGraphOptions, true);
+      var computedSrc = cfg.srcBase + this.model.toUrl(cfg.globalGraphOptions)+
+                        '&' + $.param(dimensions, true);
 
       $(this.el).find('img').css({
         width: dimensions.width + 'px',
