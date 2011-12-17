@@ -45,7 +45,10 @@
       <fieldset>
         <div><label>Title: </label><input class="title" value="<%= title %>"></div>
         <div><label>Data:  </label><textarea class="target"><%= target.join(' | ') %></textarea></div>
-        <div><button class="btn primary">done</button></div>
+        <div>
+          <button class="btn secondary delete">delete</button>
+          <button class="btn primary">done</button>
+        </div>
       </fieldset>
     </form>
   </script>

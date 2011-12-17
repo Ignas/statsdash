@@ -46,7 +46,8 @@ $(function() {
     },
     events: {
       'click img': 'edit',
-      'click button': 'doneEdit',
+      'click button.primary': 'doneEdit',
+      'click button.delete': 'remove',
       'keydown': 'catchKeys'
     },
     updateImage: function() {
@@ -81,6 +82,10 @@ $(function() {
       if ($(this.el).hasClass('edit')){
         e.stopPropagation();
       }
+    },
+    remove: function(e){
+      this.model.destroy();
+      $(this.el).remove();
     }
   });
 
