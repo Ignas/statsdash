@@ -176,7 +176,7 @@ $(function() {
       this.model.bind('add', this.addOne, this);
       this.model.bind('reset', this.addAll, this);
       this.model.bind('all', this.render, this);
-      this.model.fetch();
+      // this.model.fetch();
       if (!this.model.length) {
         this.load();
       }
