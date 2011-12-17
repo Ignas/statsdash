@@ -5,8 +5,6 @@ $(function() {
   // TODO: Config model
   var cfg = window.AppConfig;
 
-  var SITE_ID = 'AMO';
-
   /* 
    * Graph Model
    */
@@ -87,6 +85,29 @@ $(function() {
   });
 
   /*
+   * Graph Selector View
+   */
+  window.GraphSelectorView = Backbone.View.extend({
+    el: $('#graph-select'),
+    initialize: function() {
+      var self = this;
+      for (var i in cfg.defaultGraphs){
+        this.el.append('<option>'+i+'</option>');
+      }
+      this.el.change(function() {
+        self.options.app.graph_set = self.el.val();
+        self.options.app.trigger('reset');
+      });
+      if (!self.options.app.graph_set){
+        self.options.app.graph_set = self.el.val();
+      }
+    },
+    update: function() {
+      this.el.attr('value', this.options.app.graph_set);
+    }
+  });
+
+  /*
    * Time Selector View
    */
   window.TimeView = Backbone.View.extend({
@@ -106,20 +127,20 @@ $(function() {
    */
 
    window.LegendToggle = Backbone.View.extend({
-       el: $('#show_legend'),
-       initialize: function() {
-           var view = this;
-           cfg.globalGraphOptions.hideLegend = !this.el.is(':checked');
-           this.el.change(function() {
-               cfg.globalGraphOptions.hideLegend = !view.el.is(':checked');
-               view.trigger('change');
-           });
-       },
-       toggle: function(){
-           this.el.prop('checked', !this.el.prop('checked'));
-           this.el.trigger('change');
-       }
-   });
+     el: $('#show_legend'),
+     initialize: function() {
+       var view = this;
+       cfg.globalGraphOptions.hideLegend = !this.el.is(':checked');
+       this.el.change(function() {
+         cfg.globalGraphOptions.hideLegend = !view.el.is(':checked');
+         view.trigger('change');
+       });
+     },
+     toggle: function(){
+       this.el.prop('checked', !this.el.prop('checked'));
+       this.el.trigger('change');
+     }
+  });
 
   /*
    * The Application
@@ -128,6 +149,15 @@ $(function() {
     el: $("#graph-app"),
     initialize: function() {
       var self = this;
+
+      _.extend(this, Backbone.Events);
+      this.bind('reset', function(){
+        this.load();
+      });
+
+      // Graph selector
+      this.graphSelectorView = new GraphSelectorView({app: this});
+      this.graphSelectorView.bind('change', this.render, this);
 
       // Time selector
       this.timeView = new TimeView();
@@ -143,9 +173,7 @@ $(function() {
       this.model.bind('all', this.render, this);
       this.model.fetch();
       if (!this.model.length) {
-        _.each(cfg.defaultGraphs[SITE_ID], function(g) {
-          self.model.create(g);
-        });
+        this.load();
       }
 
       function render() {
@@ -175,6 +203,10 @@ $(function() {
           case 82: // r
             App.render();
             break;
+          case 191: // ? (shift + /)
+            if (!e.shiftKey){
+                break;
+            }
           case 72: // h
             $('legend').toggleClass("show");
             e.preventDefault();
@@ -184,6 +216,19 @@ $(function() {
             break;
         }
       });
+    },
+    load: function() {
+      var self = this;
+      // Clear out old graphs
+      this.model.each(function(g){
+        g.destroy();
+      });
+      this.el.html('');
+
+      _.each(cfg.defaultGraphs[this.graph_set], function(g) {
+        self.model.create(g);
+      });
+      this.graphSelectorView.update();
     },
     addOne: function(graph) {
       var view = new GraphView({model: graph});
