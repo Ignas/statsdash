@@ -114,6 +114,10 @@ $(function() {
                cfg.globalGraphOptions.hideLegend = !view.el.is(':checked');
                view.trigger('change');
            });
+       },
+       toggle: function(){
+           this.el.prop('checked', !this.el.prop('checked'));
+           this.el.trigger('change');
        }
    });
 
@@ -167,7 +171,7 @@ $(function() {
       $(window).keydown(function(e) {
         switch (e.which) {
           case 76: // l
-            cfg.globalGraphOptions.hideLegend = !cfg.globalGraphOptions.hideLegend;
+            self.legendToggle.toggle();
           case 82: // r
             App.render();
             break;
