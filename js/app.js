@@ -234,6 +234,7 @@ $(function() {
         self.model.create(g);
       });
       this.graphSelectorView.update();
+      this.render();
     },
     addOne: function(graph) {
       var view = new GraphView({model: graph});
