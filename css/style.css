@@ -52,6 +52,9 @@ legend p:first-letter {
 .topbar label {
     color: rgba(255,255,255,0.75);
 }
+.topbar select {
+    width: 8em;
+}
 
 .container {
   padding: 0 15px;
