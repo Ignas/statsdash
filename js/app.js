@@ -54,7 +54,7 @@ $(function() {
     updateImage: function() {
       var dimensions = {
         width: ~~($('body').width() / 2),
-        height: ~~($('body').height() / 2 - 20),
+        height: ~~($('body').height() / 3 - 20),
         t: Math.random()
       };
       var computedSrc = cfg.srcBase + this.model.toUrl(cfg.globalGraphOptions)+
