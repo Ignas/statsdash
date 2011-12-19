@@ -86,6 +86,7 @@ $(function() {
     remove: function(e){
       this.model.destroy();
       $(this.el).remove();
+      e.stopPropagation();
     }
   });
 
