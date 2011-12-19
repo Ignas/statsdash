@@ -51,6 +51,7 @@ legend p:first-letter {
 }
 .topbar label {
     color: rgba(255,255,255,0.75);
+    width: auto;
 }
 .topbar select {
     width: 8em;
