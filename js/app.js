@@ -226,16 +226,13 @@ $(function() {
     load: function() {
       var self = this;
       // Clear out old graphs
-      this.model.each(function(g){
-        g.destroy();
-      });
+      this.model.reset();
       this.el.html('');
 
       _.each(cfg.defaultGraphs[this.graph_set], function(g) {
         self.model.create(g);
       });
       this.graphSelectorView.update();
-      this.render();
     },
     addOne: function(graph) {
       var view = new GraphView({model: graph});
