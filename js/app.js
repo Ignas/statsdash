@@ -52,9 +52,20 @@ $(function() {
       'keydown': 'catchKeys'
     },
     updateImage: function() {
+      var grid_width = 2,
+          grid_height = 2;
+      if (this.model.collection.length > 4) {
+          grid_height = 3;
+      }
+      if (this.model.collection.length > 6) {
+          grid_width = 3;
+      }
+      if (this.model.collection.length > 9) {
+          grid_height = (this.model.collection.length / grid_width) + 1;
+      }
       var dimensions = {
-        width: ~~($('body').width() / 2),
-        height: ~~($('body').height() / 3 - 20),
+        width: ~~($('body').width() / grid_width),
+        height: ~~($('body').height() / grid_height - 20),
         t: Math.random()
       };
       var computedSrc = cfg.srcBase + this.model.toUrl(cfg.globalGraphOptions)+
